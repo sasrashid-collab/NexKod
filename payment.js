@@ -36,7 +36,7 @@ async function initiateWhatsAppPayment() {
     const message = ` *NexKod - داواکاری ماڵپەڕ*\n\n📋 ژمارەی ئۆردەر: ${orderId}\n پاکێج: ${planNames[currentPlan.id]}\n💰 بڕ: ${currentPlan.price.toLocaleString()} د.ع\n\n👤 تەلەفۆن: ${phone}\n📧 ئیمەیڵ: ${email}\n💳 ڕێگا: ${currentMethod.toUpperCase()}\n\n📝 تکایە پسوولەی پارەدان بنێرە بۆ چالاککردنی ماڵپەڕ.`;
     
     // ⚠️ ژمارەی واتسئەپی خۆت لێرە بنووسە (بێ +)
-    const YOUR_WHATSAPP_NUMBER = '9647501234567'; 
+    const YOUR_WHATSAPP_NUMBER = '9647504909260'; 
     
     if(confirm(`✅ داواکاری ئامادەیە!\n🔖 ${orderId}\n💰 ${currentPlan.price.toLocaleString()} د.ع\n\nدەچیتە واتسئەپ بۆ ناردن.`)) {
         window.open(`https://wa.me/${YOUR_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
