@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>NexKod - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Cairo',sans-serif;background:#0A0A0F;color:#F5F0E8;padding:2rem}
+        .container{max-width:900px;margin:0 auto}
+        h1{color:#C9A84C;text-align:center;margin-bottom:2rem}
+        .card{background:#1A1A28;border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:1.5rem;margin:1rem 0}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+        .id{background:#C9A84C;color:#0A0A0F;padding:0.3rem 0.8rem;border-radius:6px;font-weight:700}
+        .grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .item label{color:rgba(245,240,232,0.7);font-size:0.85rem}
+        .item strong{display:block;margin-top:0.2rem}
+        .status{padding:0.3rem 0.8rem;border-radius:6px;font-size:0.85rem}
+        .pending{background:#FFA500;color:#000}
+        .paid{background:#28a745;color:#fff}
+        .actions{margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap}
+        .btn{padding:0.5rem 1rem;border:none;border-radius:6px;cursor:pointer;font-weight:600;color:#fff}
+        .approve{background:#28a745}.reject{background:#dc3545}.wa{background:#25D366}
+        .refresh{background:#C9A84C;color:#0A0A0F;padding:0.8rem 2rem;border:none;border-radius:8px;cursor:pointer;font-weight:700;display:block;margin:0 auto 2rem}
+        .empty{text-align:center;color:rgba(245,240,232,0.5);margin-top:2rem}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 NexKod - پانێلی بەڕێوەبردن</h1>
+        <button class="refresh" onclick="loadOrders()">🔄 نوێکردنەوە</button>
+        <div id="list"></div>
+    </div>
+    <script>
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('nexkod_orders') || '[]');
+            const list = document.getElementById('list');
+            if (!orders.length) { list.innerHTML = '<p class="empty">هیچ داواکارییەک نییە</p>'; return; }
+            list.innerHTML = orders.reverse().map(o => `
+                <div class="card">
+                    <div class="header">
+                        <span class="id">${o.orderId}</span>
+                        <span class="status ${o.status==='pending'?'pending':'paid'}">${o.status==='pending'?'⏳ چاوەڕێی پارەدان':'✅ پارەدراو'}</span>
+                    </div>
+                    <div class="grid">
+                        <div class="item"><label>پاکێج</label><strong>${o.plan} - ${o.price.toLocaleString()} د.ع</strong></div>
+                        <div class="item"><label>تەلەفۆن</label><strong>${o.phone}</strong></div>
+                        <div class="item"><label>ئیمەیڵ</label><strong>${o.email}</strong></div>
+                        <div class="item"><label>کات</label><strong>${new Date(o.createdAt).toLocaleString('ku-IQ')}</strong></div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn wa" onclick="window.open('https://wa.me/${o.phone}?text=سڵاو، دەربارەی ${o.orderId}','_blank')">💬 واتسئەپ</button>
+                        ${o.status==='pending'?`<button class="btn approve" onclick="approve('${o.orderId}')">✅ دڵنیابوونەوە</button>`:''}
+                        <button class="btn reject" onclick="remove('${o.orderId}')">🗑️ سڕینەوە</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function approve(id) {
+            const orders = JSON.parse(localStorage.getItem('nexkod_orders') || '[]');
+            const o = orders.find(x=>x.orderId===id);
+            if(o) { o.status='paid'; localStorage.setItem('nexkod_orders', JSON.stringify(orders)); loadOrders(); alert('✅ چالاک کرا! لینکی ماڵپەڕ بۆ کڕیار بنێرە.'); }
+        }
+        function remove(id) {
+            if(!confirm('دڵنیایت؟')) return;
+            let orders = JSON.parse(localStorage.getItem('nexkod_orders') || '[]');
+            orders = orders.filter(x=>x.orderId!==id);
+            localStorage.setItem('nexkod_orders', JSON.stringify(orders));
+            loadOrders();
+        }
+        loadOrders();
+    </script>
+</body>
+</html>
