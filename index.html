@@ -68,30 +68,50 @@
         <section class="pricing" id="pricing">
             <h2>نرخەکانی بازاڕی عێراق</h2>
             <div class="plans">
+                <!-- بنەڕەتی -->
                 <div class="plan" onclick="selectPlan('basic', 250000)">
                     <h3>بنەڕەتی</h3>
-                    <p class="price">٢٥٠,٠٠٠ <span>د.ع</span></p>
-                    <ul><li> لاپەڕە</li><li>دۆمەینی لاوەکی</li><li>پشتگیری ١ مانگ</li></ul>
+                    <p class="price">٢٥٠,٠٠ <span>د.ع</span></p>
+                    <ul>
+                        <li>١ لاپەڕەی وێب (Landing Page)</li>
+                        <li>دۆمەینی لاوەکی (yoursite.nexkod.com)</li>
+                        <li>دیزاینی گونجاو بۆ مۆبایل</li>
+                        <li>پشتگیری تەکنیکی ١ مانگ</li>
+                    </ul>
                     <button class="btn-plan">هەڵبژاردن</button>
                 </div>
+
+                <!-- پیشەیی -->
                 <div class="plan featured" onclick="selectPlan('pro', 750000)">
                     <span class="badge">⭐ بەناوبانگترین</span>
                     <h3>پیشەیی</h3>
-                    <p class="price">٧٥,٠٠ <span>د.ع</span></p>
-                    <ul><li>تا ١٠ لاپەڕە</li><li>دۆمەینی تایبەت</li><li>SSL + SEO</li><li>پشتگیری ٣ مانگ</li></ul>
+                    <p class="price">٧٥٠,٠٠٠ <span>د.ع</span></p>
+                    <ul>
+                        <li>تا ٥ لاپەڕەی وێب</li>
+                        <li>دۆمەینی تایبەت (.com یان .iq) بۆ ١ ساڵ</li>
+                        <li>SSL + SEO بنەڕەتی (بۆ گووگڵ)</li>
+                        <li>پشتگیری ٣ مانگ + ڕاهێنانی کورت</li>
+                    </ul>
                     <button class="btn-plan">هەڵبژاردن</button>
                 </div>
+
+                <!-- ڕێکخراوە -->
                 <div class="plan" onclick="selectPlan('enterprise', 2500000)">
                     <h3>ڕێکخراوە</h3>
-                    <p class="price">٢,٥٠٠,٠٠+ <span>د.ع</span></p>
-                    <ul><li>بێ سنوور لاپەڕە</li><li>فرۆشگای ئەلیکترۆنی</li><li>ئەپی مۆبایل</li><li>پشتگیری ٢٤/</li></ul>
+                    <p class="price">٢,٥٠٠,٠٠٠+ <span>د.ع</span></p>
+                    <ul>
+                        <li>ماڵپەڕی بێسنوور لاپەڕە</li>
+                        <li>فرۆشگای ئەلیکترۆنی تەواو</li>
+                        <li>ئەپی مۆبایل (Android + iOS)</li>
+                        <li>پشتگیری ٢٤/٧ + بەڕێوەبردنی تەواو</li>
+                    </ul>
                     <button class="btn-plan">هەڵبژاردن</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 💳 PAYMENT MODAL -->
+    <!--  PAYMENT MODAL -->
     <div class="modal" id="payModal" style="display:none;">
         <div class="modal-content">
             <button class="close" onclick="closePayModal()">×</button>
@@ -102,8 +122,8 @@
             </div>
             <div class="methods">
                 <label class="method"><input type="radio" name="pm" value="fastpay"><span>🟡 FastPay</span></label>
-                <label class="method"><input type="radio" name="pm" value="fib"><span>🔵 FIB Bank</span></label>
-                <label class="method"><input type="radio" name="pm" value="zaincash"><span>🟠 Zain Cash</span></label>
+                <label class="method"><input type="radio" name="pm" value="fib"><span> FIB Bank</span></label>
+                <label class="method"><input type="radio" name="pm" value="zaincash"><span> Zain Cash</span></label>
             </div>
             <form id="payForm" style="display:none;">
                 <input type="tel" id="payPhone" placeholder="+964 7XX XXX XXXX" required dir="ltr">
@@ -163,7 +183,7 @@
             // ⚠️ ژمارەی واتسئەپی خۆت لێرە بنووسە (بێ +)
             const YOUR_WHATSAPP_NUMBER = '9647501234567'; 
             
-            if(confirm(`✅ داواکاریت ئامادەیە!\n\n ژمارەی ئۆردەر: ${orderId}\n💰 بڕ: ${currentPlan.price.toLocaleString()} د.ع\n\nدەچیتە واتسئەپ بۆ ناردنی داواکاری.`)) {
+            if(confirm(`✅ داواکاریت ئامادەیە!\n\n🔖 ژمارەی ئۆردەر: ${orderId}\n بڕ: ${currentPlan.price.toLocaleString()} د.ع\n\nدەچیتە واتسئەپ بۆ ناردنی داواکاری.`)) {
                 window.open(`https://wa.me/${YOUR_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
                 
                 const orders = JSON.parse(localStorage.getItem('nexkod_orders') || '[]');
