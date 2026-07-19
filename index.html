@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexKod | دروستکەری ماڵپەڕ بە زیرەکی دەسکرد</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Nex<span class="gold">Kod</span></div>
+        <a href="#pricing" class="nav-cta">دەست پێ بکە</a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>ماڵپەڕی داهاتوو، بە <span class="gold">زیرەکی دەسکرد</span></h1>
+            <p>یەکەم پلاتفۆرم لە کوردستان کە دوای پارەدان خۆکارانە ماڵپەڕەکەت دروست دەکات.</p>
+            <a href="#pricing" class="btn-primary">بینینی پاکێجەکان</a>
+        </section>
+
+        <section class="pricing" id="pricing">
+            <h2>نرخەکانی بازاڕی عێراق</h2>
+            <div class="plans">
+                <div class="plan" onclick="selectPlan('basic', 250000)">
+                    <h3>بنەڕەتی</h3>
+                    <p class="price">٢٥٠,٠٠٠ <span>د.ع</span></p>
+                    <ul><li>١ لاپەڕە</li><li>دۆمەینی لاوەکی</li><li>پشتگیری ١ مانگ</li></ul>
+                    <button class="btn-plan">هەڵبژاردن</button>
+                </div>
+                <div class="plan featured" onclick="selectPlan('pro', 750000)">
+                    <span class="badge">⭐ بەناوبانگترین</span>
+                    <h3>پیشەیی</h3>
+                    <p class="price">٧٥٠,٠٠ <span>د.ع</span></p>
+                    <ul><li>تا ٠ لاپەڕە</li><li>دۆمەینی تایبەت</li><li>SSL + SEO</li><li>پشتگیری ٣ مانگ</li></ul>
+                    <button class="btn-plan">هەڵبژاردن</button>
+                </div>
+                <div class="plan" onclick="selectPlan('enterprise', 2500000)">
+                    <h3>ڕێکخراوە</h3>
+                    <p class="price">٢,٥٠٠,٠٠+ <span>د.ع</span></p>
+                    <ul><li>بێ سنوور لاپەڕە</li><li>فرۆشگای ئەلیکترۆنی</li><li>ئەپی مۆبایل</li><li>پشتگیری ٤/٧</li></ul>
+                    <button class="btn-plan">هەڵبژاردن</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 💳 PAYMENT MODAL -->
+    <div class="modal" id="payModal" style="display:none;">
+        <div class="modal-content">
+            <button class="close" onclick="closePayModal()">×</button>
+            <h3>تەواوکردنی پارەدان</h3>
+            <div class="summary">
+                <span>پاکێج:</span> <strong id="pPlan">-</strong>
+                <span>بڕ:</span> <strong id="pPrice">-</strong>
+            </div>
+            <div class="methods">
+                <label class="method"><input type="radio" name="pm" value="fastpay"><span> FastPay</span></label>
+                <label class="method"><input type="radio" name="pm" value="fib"><span>🔵 FIB Bank</span></label>
+                <label class="method"><input type="radio" name="pm" value="zaincash"><span>🟠 Zain Cash</span></label>
+            </div>
+            <form id="payForm" style="display:none;">
+                <input type="tel" id="payPhone" placeholder="+964 7XX XXX XXXX" required dir="ltr">
+                <input type="email" id="payEmail" placeholder="email@example.com" required dir="ltr">
+                <button type="button" onclick="initiateWhatsAppPayment()" class="btn-pay">💳 پارەدان لە ڕێگەی واتسئەپ</button>
+            </form>
+            <div class="status" id="payStatus" style="display:none;">
+                <div class="step active">📱 داواکاری ئامادەیە</div>
+                <div class="step">🏦 چاوەڕێی پسوولە</div>
+                <div class="step"> NexKod دەست بە کار دەکات</div>
+                <div class="step">✅ ئامادەیە!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ SUCCESS MODAL -->
+    <div class="modal" id="successModal" style="display:none;">
+        <div class="modal-content success">
+            <div class="icon"></div>
+            <h3>داواکاریت بە سەرکەوتوویی نێردرا!</h3>
+            <p>پاش نووسینی پسوولەی پارەدان لە واتسئەپ، ماڵپەڕەکەت لە ماوەی ٢٤ کاتژمێردا چالاک دەکرێت.</p>
+            <a href="#" id="siteLink" target="_blank" class="link">چاوەڕێی چالاککردن بکە...</a>
+            <button class="btn-secondary" onclick="closeSuccessModal()">داخستن</button>
+        </div>
+    </div>
+
+    <script src="js/payment.js"></script>
+</body>
+</html>
