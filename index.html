@@ -13,10 +13,16 @@
         .navbar { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:rgba(10,10,15,0.9); backdrop-filter:blur(10px); position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border); }
         .logo { font-size:1.5rem; font-weight:900; }
         .gold { color:var(--gold); }
+        .lang-switcher { display:flex; gap:0.5rem; align-items:center; position:relative; }
+        .lang-switcher button { background:transparent; border:1px solid var(--border); color:var(--dim); padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer; transition:0.3s; }
+        .lang-switcher button:hover { color:var(--gold); border-color:var(--gold); }
+        #ku-menu { display:none; position:absolute; top:100%; right:0; background:var(--dark2); border:1px solid var(--border); border-radius:8px; padding:0.5rem; z-index:1000; min-width:120px; margin-top:0.5rem; }
+        #ku-menu button { display:block; width:100%; text-align:right; padding:0.4rem; background:none; border:none; color:var(--text); cursor:pointer; border-radius:4px; }
+        #ku-menu button:hover { background:rgba(201,168,76,0.15); color:var(--gold); }
         .nav-cta { background:var(--gold); color:var(--dark); padding:0.6rem 1.2rem; border-radius:8px; font-weight:700; }
         main { padding:4rem 2rem; max-width:1200px; margin:0 auto; }
         .hero { text-align:center; padding:6rem 1rem; }
-        .hero h1 { font-size:clamp(2rem,5vw,3.5rem); margin-bottom:1rem; }
+        .hero h1 { font-size:clamp(2rem,5vw,3.5rem); margin-bottom:1rem; line-height:1.3; }
         .btn-primary { background:var(--gold); color:var(--dark); padding:1rem 2rem; border:none; border-radius:8px; font-weight:700; cursor:pointer; display:inline-block; }
         .pricing { text-align:center; margin-top:4rem; }
         .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:2rem; }
@@ -46,123 +52,307 @@
         .btn-pay:disabled { opacity:0.7; cursor:not-allowed; }
         .success { text-align:center; }
         .success .icon { font-size:3rem; margin-bottom:1rem; }
-        .success .link { display:block; background:var(--dark3); padding:0.8rem; border-radius:8px; margin:0.5rem 0; word-break:break-all; color:var(--gold); }
         .btn-secondary { background:transparent; border:1px solid var(--border); color:var(--text); padding:0.8rem; border-radius:8px; cursor:pointer; margin-top:0.5rem; width:100%; }
         .domain-info { background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); border-radius:8px; padding:0.8rem; margin:0.5rem 0; font-size:0.85rem; }
-        @media (max-width:600px) { .navbar { padding:0.8rem 1rem; } .hero h1 { font-size:2rem; } .modal-content { padding:1.5rem; } }
+        @media (max-width:600px) { .navbar { padding:0.8rem 1rem; flex-wrap:wrap; gap:1rem; } .hero h1 { font-size:2rem; } .modal-content { padding:1.5rem; } .lang-switcher { order:3; width:100%; justify-content:center; } }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">Nex<span class="gold">Kod</span></div>
-        <a href="#pricing" class="nav-cta">دەست پێ بکە</a>
+        <div class="lang-switcher" style="position:relative;">
+            <button onclick="setLanguage('ar')" data-i18n="lang_ar">عربي</button>
+            <button onclick="setLanguage('en')" data-i18n="lang_en">EN</button>
+            <button onclick="toggleKuMenu()" data-i18n="lang_ku">کوردی ▼</button>
+            <div id="ku-menu">
+                <button onclick="setLanguage('ku','sorani')" data-i18n="dialect_sorani">سۆرانی</button>
+                <button onclick="setLanguage('ku','kurmanji')" data-i18n="dialect_kurmanji">کرمانجی</button>
+                <button onclick="setLanguage('ku','badini')" data-i18n="dialect_badini">بەهدینی</button>
+                <button onclick="setLanguage('ku','hawrami')" data-i18n="dialect_hawrami">هەورامی</button>
+            </div>
+        </div>
+        <a href="#pricing" class="nav-cta" data-i18n="nav_start">دەست پێ بکە</a>
     </nav>
 
     <main>
         <section class="hero">
-            <h1>ماڵپەڕی داهاتوو، بە <span class="gold">زیرەکی دەسکرد</span></h1>
-            <p>یەکەم پلاتفۆرم لە کوردستان کە دوای پارەدان خۆکارانە ماڵپەڕەکەت دروست دەکات.</p>
-            <a href="#pricing" class="btn-primary">بینینی پاکێجەکان</a>
+            <h1 data-i18n="hero_title">ماڵپەڕی داهاتوو، بە <span class="gold">زیرەکی دەسکرد</span></h1>
+            <p data-i18n="hero_desc">یەکەم پلاتفۆرم لە کوردستان کە دوای پارەدان خۆکارانە ماڵپەڕەکەت دروست دەکات.</p>
+            <a href="#pricing" class="btn-primary" data-i18n="btn_plans">بینینی پاکێجەکان</a>
         </section>
 
         <section class="pricing" id="pricing">
-            <h2>نرخەکانی بازاڕی عێراق</h2>
+            <h2 data-i18n="pricing_title">نرخەکانی بازاڕی عێراق</h2>
             <div class="plans">
-                <!-- بنەڕەتی -->
                 <div class="plan" onclick="selectPlan('basic', 250000)">
-                    <h3>بنەڕەتی</h3>
-                    <p class="price">٢٥٠,٠٠ <span>د.ع</span></p>
+                    <h3 data-i18n="plan_basic">بنەڕەتی</h3>
+                    <p class="price">٢٥,٠٠٠ <span data-i18n="currency">د.ع</span></p>
                     <ul>
-                        <li>١ لاپەڕەی وێب (Landing Page)</li>
-                        <li>دۆمەینی لاوەکی خۆڕایی</li>
-                        <li class="domain-note">(yoursite.nexkod.com)</li>
-                        <li>دیزاینی گونجاو بۆ مۆبایل</li>
-                        <li>پشتگیری تەکنیکی ١ مانگ</li>
+                        <li data-i18n="basic_1">١ لاپەڕەی وێب (Landing Page)</li>
+                        <li data-i18n="basic_2">دۆمەینی لاوەکی خۆڕایی</li>
+                        <li class="domain-note" data-i18n="basic_2_note">(yoursite.nexkod.com)</li>
+                        <li data-i18n="basic_3">دیزاینی گونجاو بۆ مۆبایل</li>
+                        <li data-i18n="basic_4">پشتگیری تەکنیکی ١ مانگ</li>
                     </ul>
-                    <button class="btn-plan">هەڵبژاردن</button>
+                    <button class="btn-plan" data-i18n="btn_select">هەڵبژاردن</button>
                 </div>
 
-                <!-- پیشەیی -->
                 <div class="plan featured" onclick="selectPlan('pro', 750000)">
-                    <span class="badge">⭐ بەناوبانگترین</span>
-                    <h3>پیشەیی</h3>
-                    <p class="price">٧٥٠,٠٠٠ <span>د.ع</span></p>
+                    <span class="badge" data-i18n="badge_pop">⭐ بەناوبانگترین</span>
+                    <h3 data-i18n="plan_pro">پیشەیی</h3>
+                    <p class="price">٧٥٠,٠٠ <span data-i18n="currency">د.ع</span></p>
                     <ul>
-                        <li>تا ١ لاپەڕەی وێب</li>
-                        <li>دۆمەینی تایبەت بۆ ١ ساڵ</li>
-                        <li class="domain-note">(.com یان .net - لەلایەن ئێمەوە تۆمار دەکرێت)</li>
-                        <li>SSL + SEO بنەڕەتی</li>
-                        <li>پشتگیری ٣ مانگ</li>
+                        <li data-i18n="pro_1">تا ١٠ لاپەڕەی وێب</li>
+                        <li data-i18n="pro_2">دۆمەینی تایبەت بۆ ١ ساڵ</li>
+                        <li class="domain-note" data-i18n="pro_2_note">(.com یان .net)</li>
+                        <li data-i18n="pro_3">SSL + SEO بنەڕەتی</li>
+                        <li data-i18n="pro_4">پشتگیری ٣ مانگ</li>
                     </ul>
-                    <button class="btn-plan">هەڵبژاردن</button>
+                    <button class="btn-plan" data-i18n="btn_select">هەڵبژاردن</button>
                 </div>
 
-                <!-- ڕێکخراوە -->
                 <div class="plan" onclick="selectPlan('enterprise', 2500000)">
-                    <h3>ڕێکخراوە</h3>
-                    <p class="price">٢,٥٠٠,٠٠٠+ <span>د.ع</span></p>
+                    <h3 data-i18n="plan_ent">ڕێکخراوە</h3>
+                    <p class="price">٢,٥٠٠,٠٠٠+ <span data-i18n="currency">د.ع</span></p>
                     <ul>
-                        <li>ماڵپەڕی بێسنوور لاپەڕە</li>
-                        <li>فرۆشگای ئەلیکترۆنی تەواو</li>
-                        <li>ئەپی مۆبایل (Android + iOS)</li>
-                        <li>دۆمەینی تایبەت (.com/.krd/.iq)</li>
-                        <li>پشتگیری ٢٤/٧</li>
+                        <li data-i18n="ent_1">ماڵپەڕی بێسنوور لاپەڕە</li>
+                        <li data-i18n="ent_2">فرۆشگای ئەلیکترۆنی تەواو</li>
+                        <li data-i18n="ent_3">ئەپی مۆبایل (Android + iOS)</li>
+                        <li data-i18n="ent_4">دۆمەینی تایبەت (.com/.krd/.iq)</li>
+                        <li data-i18n="ent_5">پشتگیری ٢٤/٧</li>
                     </ul>
-                    <button class="btn-plan">هەڵبژاردن</button>
+                    <button class="btn-plan" data-i18n="btn_select">هەڵبژاردن</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 💳 PAYMENT MODAL -->
     <div class="modal" id="payModal" style="display:none;">
         <div class="modal-content">
             <button class="close" onclick="closePayModal()">×</button>
-            <h3>تەواوکردنی پارەدان</h3>
+            <h3 data-i18n="pay_title">تەواوکردنی پارەدان</h3>
             <div class="summary">
-                <span>پاکێج:</span> <strong id="pPlan">-</strong>
-                <span>بڕ:</span> <strong id="pPrice">-</strong>
+                <span data-i18n="summary_plan">پاکێج:</span> <strong id="pPlan">-</strong>
+                <span data-i18n="summary_price">بڕ:</span> <strong id="pPrice">-</strong>
             </div>
             
             <div class="domain-info">
-                <strong>🌐 زانیاری دۆمەین:</strong><br>
-                ئەگەر پڵانی پیشەیی یان ڕێکخراوەت هەڵبژاردووە، تکایە ناوی دۆمەینی خوازراوت بنووسە (وەک: yoursite.com)
+                <strong>🌐 <span data-i18n="domain_info_title">زانیاری دۆمەین:</span></strong><br>
+                <span data-i18n="domain_info_text">ئەگەر پڵانی پیشەیی یان ڕێکخراوەت هەڵبژاردووە، تکایە ناوی دۆمەینی خوازراوت بنووسە (وەک: yoursite.com)</span>
             </div>
 
             <div class="methods">
-                <label class="method"><input type="radio" name="pm" value="fastpay"><span> FastPay</span></label>
+                <label class="method"><input type="radio" name="pm" value="fastpay"><span>🟡 FastPay</span></label>
                 <label class="method"><input type="radio" name="pm" value="fib"><span>🔵 FIB Bank</span></label>
-                <label class="method"><input type="radio" name="pm" value="zaincash"><span> Zain Cash</span></label>
+                <label class="method"><input type="radio" name="pm" value="zaincash"><span>🟠 Zain Cash</span></label>
             </div>
             
             <form id="payForm" style="display:none;">
                 <input type="text" id="domainName" placeholder="ناوی دۆمەینی خوازراو (ئەگەر هەبوو)" dir="ltr">
                 <input type="tel" id="payPhone" placeholder="+964 7XX XXX XXXX" required dir="ltr">
                 <input type="email" id="payEmail" placeholder="email@example.com" required dir="ltr">
-                <button type="button" onclick="initiateWhatsAppPayment()" class="btn-pay">💳 پارەدان لە ڕێگەی واتسئەپ</button>
+                <button type="button" onclick="initiateWhatsAppPayment()" class="btn-pay" data-i18n="btn_pay">💳 پارەدان لە ڕێگەی واتسئەپ</button>
             </form>
         </div>
     </div>
 
-    <!-- ✅ SUCCESS MODAL -->
     <div class="modal" id="successModal" style="display:none;">
         <div class="modal-content success">
             <div class="icon">🎉</div>
-            <h3>داواکاریت بە سەرکەوتوویی نێردرا!</h3>
-            <p>پاش ناردنی پسوولەی پارەدان لە واتسئەپ، ماڵپەڕەکەت لە ماوەی ٢٤-٤٨ کاتژمێردا چالاک دەکرێت.</p>
-            <p style="font-size:0.9rem; color:var(--dim);">دۆمەینەکەت لەلایەن تیمی NexKodـەوە تۆمار و چالاک دەکرێت.</p>
-            <button class="btn-secondary" onclick="closeSuccessModal()">داخستن</button>
+            <h3 data-i18n="success_title">داواکاریت بە سەرکەوتوویی نێردرا!</h3>
+            <p data-i18n="success_desc">پاش ناردنی پسوولەی پارەدان لە واتسئەپ، ماڵپەڕەکەت لە ماوەی ٢٤-٤٨ کاتژمێردا چالاک دەکرێت.</p>
+            <p style="font-size:0.9rem; color:var(--dim);" data-i18n="success_domain">دۆمەینەکەت لەلایەن تیمی NexKodـەوە تۆمار و چالاک دەکرێت.</p>
+            <button class="btn-secondary" onclick="closeSuccessModal()" data-i18n="btn_close">داخستن</button>
         </div>
     </div>
 
     <script>
+        const i18n = {
+            ar: {
+                lang_ar: "عربي", lang_en: "EN", lang_ku: "كردي ▼",
+                dialect_sorani: "سوراني", dialect_kurmanji: "كرمانجي", dialect_badini: "باديني", dialect_hawrami: "هورامي",
+                nav_start: "ابدأ الآن",
+                hero_title: "موقع المستقبل، بـ <span class='gold'>الذكاء الاصطناعي</span>",
+                hero_desc: "أول منصة في كردستان تنشئ موقعك تلقائياً بعد الدفع.",
+                btn_plans: "عرض الباقات",
+                pricing_title: "أسعار سوق العراق",
+                plan_basic: "الأساسية", plan_pro: "الاحترافية", plan_ent: "المؤسسات",
+                badge_pop: "⭐ الأكثر طلباً",
+                currency: "د.ع",
+                basic_1: "١ صفحة ويب", basic_2: "دومين فرعي مجاني", basic_2_note: "(yoursite.nexkod.com)", basic_3: "تصميم متجاوب", basic_4: "دعم فني شهر",
+                pro_1: "حتى ١٠ صفحات", pro_2: "دومين خاص لسنة", pro_2_note: "(.com أو .net)", pro_3: "SSL + SEO", pro_4: "دعم ٣ أشهر",
+                ent_1: "صفحات غير محدودة", ent_2: "متجر إلكتروني", ent_3: "تطبيق جوال", ent_4: "دومين خاص", ent_5: "دعم ٢٤/٧",
+                btn_select: "اختر",
+                pay_title: "إتمام الدفع",
+                domain_info_title: "معلومات الدومين:",
+                domain_info_text: "إذا اخترت باقة مدفوعة، اكتب اسم الدومين المطلوب",
+                summary_plan: "الباقة:", summary_price: "المبلغ:",
+                btn_pay: "💳 الدفع عبر واتساب",
+                success_title: "تم إرسال طلبك!",
+                success_desc: "بعد إرسال الإيصال، سيتم التفعيل خلال ٢-٤٨ ساعة.",
+                success_domain: "سيقوم فريق NexKod بتسجيل الدومين.",
+                btn_close: "إغلاق"
+            },
+            en: {
+                lang_ar: "AR", lang_en: "EN", lang_ku: "KU ▼",
+                dialect_sorani: "Sorani", dialect_kurmanji: "Kurmanji", dialect_badini: "Badini", dialect_hawrami: "Hawrami",
+                nav_start: "Get Started",
+                hero_title: "Future Websites, Powered by <span class='gold'>AI</span>",
+                hero_desc: "The first platform in Kurdistan that auto-builds your site after payment.",
+                btn_plans: "View Plans",
+                pricing_title: "Iraq Market Pricing",
+                plan_basic: "Basic", plan_pro: "Professional", plan_ent: "Enterprise",
+                badge_pop: "⭐ Most Popular",
+                currency: "IQD",
+                basic_1: "1 Web Page", basic_2: "Free Subdomain", basic_2_note: "(yoursite.nexkod.com)", basic_3: "Mobile Responsive", basic_4: "1 Month Support",
+                pro_1: "Up to 10 Pages", pro_2: "Custom Domain (1 Year)", pro_2_note: "(.com or .net)", pro_3: "SSL + SEO", pro_4: "3 Months Support",
+                ent_1: "Unlimited Pages", ent_2: "E-commerce Store", ent_3: "Mobile App", ent_4: "Custom Domain", ent_5: "24/7 Support",
+                btn_select: "Select",
+                pay_title: "Complete Payment",
+                domain_info_title: "Domain Info:",
+                domain_info_text: "If you selected a paid plan, enter desired domain",
+                summary_plan: "Plan:", summary_price: "Amount:",
+                btn_pay: "💳 Pay via WhatsApp",
+                success_title: "Request Sent!",
+                success_desc: "After sending receipt, activation in 24-48h.",
+                success_domain: "NexKod team will register your domain.",
+                btn_close: "Close"
+            },
+            ku: {
+                sorani: {
+                    lang_ar: "عربي", lang_en: "EN", lang_ku: "کوردی ▼",
+                    dialect_sorani: "سۆرانی", dialect_kurmanji: "کرمانجی", dialect_badini: "بەهدینی", dialect_hawrami: "هەورامی",
+                    nav_start: "دەست پێ بکە",
+                    hero_title: "ماڵپەڕی داهاتوو، بە <span class='gold'>زیرەکی دەسکرد</span>",
+                    hero_desc: "یەکەم پلاتفۆرم لە کوردستان کە دوای پارەدان خۆکارانە ماڵپەڕەکەت دروست دەکات.",
+                    btn_plans: "بینینی پاکێجەکان",
+                    pricing_title: "نرخەکانی بازاڕی عێراق",
+                    plan_basic: "بنەڕەتی", plan_pro: "پیشەیی", plan_ent: "ڕێکخراوە",
+                    badge_pop: "⭐ بەناوبانگترین",
+                    currency: "د.ع",
+                    basic_1: "١ لاپەڕەی وێب", basic_2: "دۆمەینی لاوەکی خۆڕایی", basic_2_note: "(yoursite.nexkod.com)", basic_3: "گونجاو بۆ مۆبایل", basic_4: "پشتگیری ١ مانگ",
+                    pro_1: "تا ١٠ لاپەڕە", pro_2: "دۆمەینی تایبەت (١ ساڵ)", pro_2_note: "(.com یان .net)", pro_3: "SSL + SEO", pro_4: "پشتگیری ٣ مانگ",
+                    ent_1: "بێسنوور لاپەڕە", ent_2: "فرۆشگای ئەلیکترۆنی", ent_3: "ئەپی مۆبایل", ent_4: "دۆمەینی تایبەت", ent_5: "پشتگیری ٢٤/٧",
+                    btn_select: "هەڵبژاردن",
+                    pay_title: "تةواوکردنی پارەدان",
+                    domain_info_title: "زانیاری دۆمەین:",
+                    domain_info_text: "ئەگەر پاکێجی پارەداریت هەڵبژاردووە، ناوی دۆمەین بنووسە",
+                    summary_plan: "پاکێج:", summary_price: "بڕ:",
+                    btn_pay: "💳 پارەدان لە ڕێگەی واتسئەپ",
+                    success_title: "داواکاریت نێردرا!",
+                    success_desc: "پاش ناردنی پسوولە، چالاککردن لە ٢٤-٤٨ کاتژمێردا.",
+                    success_domain: "تیمی NexKod دۆمەینەکەت تۆمار دەکات.",
+                    btn_close: "داخستن"
+                },
+                kurmanji: {
+                    lang_ar: "ERE", lang_en: "EN", lang_ku: "KURDÎ ▼",
+                    dialect_sorani: "Soranî", dialect_kurmanji: "Kurmancî", dialect_badini: "Badînî", dialect_hawrami: "Hewramî",
+                    nav_start: "Destpê Bike",
+                    hero_title: "Malpera Pêşerojê, Bi <span class='gold'>Zîrekiya Destkird</span>",
+                    hero_desc: "Yekem platform li Kurdistanê ku piştî dravdanê malpera te çêdike.",
+                    btn_plans: "Dîtina Pakêjan",
+                    pricing_title: "Nirxên Bazarê Iraqê",
+                    plan_basic: "Bingehîn", plan_pro: "Pîşeyî", plan_ent: "Rêxistinî",
+                    badge_pop: "⭐ Herî Navdar",
+                    currency: "IQD",
+                    basic_1: "1 Rûpelê Webê", basic_2: "Subdomena Belaş", basic_2_note: "(yoursite.nexkod.com)", basic_3: "Li Gor Mobîl", basic_4: "1 Meh Piştgirî",
+                    pro_1: "Heta 10 Rûpel", pro_2: "Domena Taybet (1 Sal)", pro_2_note: "(.com an .net)", pro_3: "SSL + SEO", pro_4: "3 Meh Piştgirî",
+                    ent_1: "Rûpel Bêsînor", ent_2: "Firoşgeha Elektronîkî", ent_3: "Sepana Mobîl", ent_4: "Domena Taybet", ent_5: "Piştgiriya 24/7",
+                    btn_select: "Hilbijêre",
+                    pay_title: "Temamkirina Dravdanê",
+                    domain_info_title: "Agahiyên Domenê:",
+                    domain_info_text: "Heke pakêja dravdanê hilbijartiye, navê domenê binivîse",
+                    summary_plan: "Pakêj:", summary_price: "Miqdar:",
+                    btn_pay: "💳 Dravdan bi WhatsApp",
+                    success_title: "Daxwaz Hat Şandin!",
+                    success_desc: "Piştî wergirtinê, çalakkirin di 24-48 saetan de.",
+                    success_domain: "Tîma NexKodê domena te qeyd dike.",
+                    btn_close: "Bigire"
+                },
+                badini: {
+                    lang_ar: "عربی", lang_en: "EN", lang_ku: "کوردی ▼",
+                    dialect_sorani: "سۆرانی", dialect_kurmanji: "کرمانجی", dialect_badini: "بەهدینی", dialect_hawrami: "هەورامی",
+                    nav_start: "دەست پێ بکە",
+                    hero_title: "ماڵپەڕا پەشەرۆژێ، ب <span class='gold'>زیرەکی دەستکرد</span>",
+                    hero_desc: "یەکەم پلاتفۆرم ل Kurdistanێ کو دویا پارەدان ماڵپەڕا تە چێ دکەت.",
+                    btn_plans: "بینینا پاکێجان",
+                    pricing_title: "نرخێن بازارێ عراقێ",
+                    plan_basic: "بنەرەتی", plan_pro: "پێشەیی", plan_ent: "ڕێکخراوە",
+                    badge_pop: "⭐ بەناوبانگترین",
+                    currency: "د.ع",
+                    basic_1: "١ لاپەڕا وێب", basic_2: "دۆمەینا لاوەکی یا بەلاش", basic_2_note: "(yoursite.nexkod.com)", basic_3: "گونجا بۆ مۆبایل", basic_4: "پشتگری ١ ماه",
+                    pro_1: "هتا ١٠ لاپەڕ", pro_2: "دۆمەینا تایبەت (١ سال)", pro_2_note: "(.com یان .net)", pro_3: "SSL + SEO", pro_4: "پشتگری ٣ ماه",
+                    ent_1: "بێسنوور لاپەڕ", ent_2: "فرۆشگایا ئەلەکترۆنی", ent_3: "ئەپێ مۆبایل", ent_4: "دۆمەینا تایبەت", ent_5: "پشتگری ٢/٧",
+                    btn_select: "هەلبژێرە",
+                    pay_title: "تەواوکرنا پارەدانێ",
+                    domain_info_title: "زانیاری دۆمەین:",
+                    domain_info_text: "ئەگەر پاکێژا پارەداری هەلبژارتی، ناڤێ دۆمەین بنووسە",
+                    summary_plan: "پاکێژ:", summary_price: "بر:",
+                    btn_pay: "💳 پارەدان ل واتسئەپ",
+                    success_title: "داواکاری هاتیە شاندن!",
+                    success_desc: "پاش وەرگرتن، چالاککرن د ٢٤-٤ کاتژمێران دا.",
+                    success_domain: "تیمێ NexKod دۆمەینا تە تۆمار دکەت.",
+                    btn_close: "داخستن"
+                },
+                hawrami: {
+                    lang_ar: "عربی", lang_en: "EN", lang_ku: "کوردی ▼",
+                    dialect_sorani: "سۆرانی", dialect_kurmanji: "کرمانجی", dialect_badini: "بەهدینی", dialect_hawrami: "هەورامی",
+                    nav_start: "دەس پەی کەرە",
+                    hero_title: "ماڵپەڕی ئایەندە، بە <span class='gold'>زیرەکی دەسکرد</span>",
+                    hero_desc: "یەکم پلاتفۆرم ئی کوردستان کە دویا پارەدان ماڵپەڕەکەت دروس کەدات.",
+                    btn_plans: "بینیەن پاکێجەل",
+                    pricing_title: "نرخەل بازار عێراق",
+                    plan_basic: "بنەڕەتی", plan_pro: "پێشەیی", plan_ent: "ڕێکخراوە",
+                    badge_pop: "⭐ بەناوبانگترین",
+                    currency: "د.ع",
+                    basic_1: "١ لاپەڕەی وێب", basic_2: "دۆمەینی لاوەکی خۆڕایی", basic_2_note: "(yoursite.nexkod.com)", basic_3: "گونجاو بۆ مۆبایل", basic_4: "پشتگیری ١ مانگ",
+                    pro_1: "تا ١٠ لاپەڕە", pro_2: "دۆمەینی تایبەت (١ ساڵ)", pro_2_note: "(.com یان .net)", pro_3: "SSL + SEO", pro_4: "پشتگیری ٣ مانگ",
+                    ent_1: "بێسنوور لاپەڕە", ent_2: "فرۆشگای ئەلیکترۆنی", ent_3: "ئەپی مۆبایل", ent_4: "دۆمەینی تایبەت", ent_5: "پشتگیری ٢٤/٧",
+                    btn_select: "هەڵبژاردن",
+                    pay_title: "تەواوکردن پارەدان",
+                    domain_info_title: "زانیاری دۆمەین:",
+                    domain_info_text: "ئەگەر پاکێجی پارەداریت هەڵبژاردووە، ناوی دۆمەین بنووسە",
+                    summary_plan: "پاکێج:", summary_price: "بڕ:",
+                    btn_pay: "💳 پارەدان لە واتسئەپ",
+                    success_title: "داواکاریت نێردرا!",
+                    success_desc: "پاش ناردنی پسوولە، چالاککردن لە ٢٤-٤٨ کاتژمێردا.",
+                    success_domain: "تیمی NexKod دۆمەینەکەت تۆمار دەکات.",
+                    btn_close: "داخستن"
+                }
+            }
+        };
+
+        function setLanguage(lang, dialect = null) {
+            const isRTL = (lang === 'ar' || (lang === 'ku' && dialect !== 'kurmanji'));
+            document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+            document.documentElement.lang = dialect ? `${lang}-${dialect}` : lang;
+            const dict = (lang === 'ku' && dialect) ? i18n.ku[dialect] : i18n[lang];
+            if (!dict) return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerHTML = dict[key];
+            });
+            localStorage.setItem('nexkod_lang', lang);
+            if (dialect) localStorage.setItem('nexkod_dialect', dialect);
+            else localStorage.removeItem('nexkod_dialect');
+            document.getElementById('ku-menu').style.display = 'none';
+        }
+
+        function toggleKuMenu() {
+            const menu = document.getElementById('ku-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
         let currentPlan = {}, currentMethod = '';
 
         function selectPlan(id, price) {
             currentPlan = { id, price };
-            const names = { basic: 'بنەڕەتی', pro: 'پیشەیی', enterprise: 'ڕێکخراوە' };
-            document.getElementById('pPlan').textContent = names[id];
-            document.getElementById('pPrice').textContent = price.toLocaleString() + ' د.ع';
+            const planKeys = { basic: 'plan_basic', pro: 'plan_pro', ent: 'plan_ent' };
+            const currentLang = localStorage.getItem('nexkod_lang') || 'ku';
+            const currentDialect = localStorage.getItem('nexkod_dialect');
+            const dict = (currentLang === 'ku' && currentDialect) ? i18n.ku[currentDialect] : i18n[currentLang];
+            document.getElementById('pPlan').textContent = dict ? dict[planKeys[id]] : id;
+            document.getElementById('pPrice').textContent = price.toLocaleString() + ' ' + (dict ? dict.currency : 'د.ع');
             document.getElementById('payModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -185,40 +375,30 @@
             const email = document.getElementById('payEmail').value.trim();
             
             if (!currentMethod) return alert('تکایە ڕێگای پارەدان هەڵبژێرە');
-            if (!/^(\+964|0)?7[0-9]{9}$/.test(phone)) return alert('ژمارەی تەلەفۆن نادروستە. نموونە: +9647501234567');
+            if (!/^(\+964|0)?7[0-9]{9}$/.test(phone)) return alert('ژمارەی تەلەفۆن نادروستە');
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('ئیمەیڵ نادروستە');
 
             const orderId = 'NK-' + Date.now().toString().slice(-8);
+            const currentLang = localStorage.getItem('nexkod_lang') || 'ku';
+            const currentDialect = localStorage.getItem('nexkod_dialect');
+            const dict = (currentLang === 'ku' && currentDialect) ? i18n.ku[currentDialect] : i18n[currentLang];
+            
             const planNames = { 
-                basic: 'بنەڕەتی (٢٥٠,٠٠ د.ع)', 
-                pro: 'پیشەیی (٧٥٠,٠٠٠ د.ع) + دۆمەینی تایبەت', 
-                enterprise: 'ڕێکخراوە (٢,٥٠٠,٠٠٠ د.ع) + دۆمەینی تایبەت' 
+                basic: dict ? (dict.plan_basic + ' (٢٥٠,٠٠ د.ع)') : 'Basic', 
+                pro: dict ? (dict.plan_pro + ' (٧٥٠,٠٠ د.ع)') : 'Pro', 
+                enterprise: dict ? (dict.plan_ent + ' (٢,٥٠٠,٠٠ د.ع)') : 'Enterprise' 
             };
             
             const domainText = domainName ? `\n🌐 دۆمەینی خوازراو: ${domainName}` : '';
+            const message = `🌟 *NexKod - داواکاری ماڵپەڕ* 🌟\n\n📋 *زانیاری داواکاری:*\n🔖 ژمارەی ئۆردەر: ${orderId}\n📦 پاکێج: ${planNames[currentPlan.id]}\n💰 بڕ: ${currentPlan.price.toLocaleString()} د.ع${domainText}\n\n👤 *زانیاری کڕیار:*\n ژمارەی تەلەفۆن: ${phone}\n📧 ئیمەیڵ: ${email}\n\n💳 *ڕێگای پارەدان:*\n${currentMethod === 'fastpay' ? '🟡 FastPay' : currentMethod === 'fib' ? '🔵 FIB Bank' : '🟠 Zain Cash'}\n\n📝 *ڕێنمایی:*\nتکایە پارەدانەکە بکە و پسوولەکە بنێرە.\n\n⏰ کاتی داواکاری: ${new Date().toLocaleString('ku-IQ')}`;
             
-            const message = `🌟 *NexKod - داواکاری ماڵپەڕ* \n\n📋 *زانیاری داواکاری:*\n ژمارەی ئۆردەر: ${orderId}\n📦 پاکێج: ${planNames[currentPlan.id]}\n💰 بڕ: ${currentPlan.price.toLocaleString()} د.ع${domainText}\n\n👤 *زانیاری کڕیار:*\n📱 ژمارەی تەلەفۆن: ${phone}\n📧 ئیمەیڵ: ${email}\n\n💳 *ڕێگای پارەدان:*\n${currentMethod === 'fastpay' ? '🟡 FastPay' : currentMethod === 'fib' ? '🔵 FIB Bank' : '🟠 Zain Cash'}\n\n📝 *ڕێنمایی:*\nتکایە پارەدانەکە بکە و پسوولەکە (Receipt) بنێرە بۆ ئەم ژمارەیە.\nدوای دڵنیابوونەوە، ماڵپەڕەکەت دروست دەکرێت و دۆمەینەکەت تۆمار دەکرێت.\n\n⏰ کاتی داواکاری: ${new Date().toLocaleString('ku-IQ')}`;
-            
-            // ⚠️ ژمارەی واتسئەپی خۆت لێرە بنووسە (بێ +)
             const YOUR_WHATSAPP_NUMBER = '9647501234567'; 
             
-            if(confirm(`✅ داواکاریت ئامادەیە!\n\n🔖 ژمارەی ئۆردەر: ${orderId}\n📦 پاکێج: ${planNames[currentPlan.id]}\n💰 بڕ: ${currentPlan.price.toLocaleString()} د.ع\n\nدەچیتە واتسئەپ بۆ ناردنی داواکاری.`)) {
+            if(confirm(`✅ داواکاریت ئامادەیە!\n\n🔖 ${orderId}\n ${planNames[currentPlan.id]}\n💰 ${currentPlan.price.toLocaleString()} د.ع`)) {
                 window.open(`https://wa.me/${YOUR_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
-                
                 const orders = JSON.parse(localStorage.getItem('nexkod_orders') || '[]');
-                orders.push({ 
-                    orderId, 
-                    plan: currentPlan.id, 
-                    price: currentPlan.price, 
-                    domain: domainName,
-                    phone, 
-                    email, 
-                    method: currentMethod, 
-                    status: 'pending_payment',
-                    createdAt: new Date().toISOString() 
-                });
+                orders.push({ orderId, plan: currentPlan.id, price: currentPlan.price, domain: domainName, phone, email, method: currentMethod, status: 'pending', createdAt: new Date().toISOString() });
                 localStorage.setItem('nexkod_orders', JSON.stringify(orders));
-                
                 closePayModal();
                 document.getElementById('successModal').style.display = 'flex';
             }
@@ -228,10 +408,17 @@
             document.getElementById('successModal').style.display = 'none';
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('nexkod_lang') || 'ku';
+            const savedDialect = localStorage.getItem('nexkod_dialect');
+            setLanguage(savedLang, savedDialect);
+        });
+
         window.selectPlan = selectPlan;
         window.closePayModal = closePayModal;
         window.initiateWhatsAppPayment = initiateWhatsAppPayment;
         window.closeSuccessModal = closeSuccessModal;
+        window.toggleKuMenu = toggleKuMenu;
     </script>
 </body>
 </html>
